@@ -1,0 +1,9 @@
+/*
+ * The Sheet (shared/ui, not ours) renders its overlay with `data-theme`, and each theme paints its
+ * page background (`background-image`) on `[data-theme]`. On the overlay that opaque image would
+ * hide the screen behind the sheet and drop the dimming. Keep only the overlay's own color.
+ * Pending in agent 16 report: the owner of shared/ui should fix this in sheet.css and delete this file.
+ */
+.sheet-overlay[data-theme] {
+  background-image: none;
+}
