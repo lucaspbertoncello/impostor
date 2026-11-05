@@ -1,0 +1,21 @@
+/*
+ * The Início background. The root of the layout carries a theme only for its tokens; here the
+ * themed background (rays or dots) is replaced by a neutral one, so the page behind the two mode
+ * cards belongs to neither mode. Specificity (0,2,0) beats the single attribute selector of the
+ * theme files.
+ */
+[data-theme][data-home='true'] {
+  background-color: #0d0e1c;
+  background-image: radial-gradient(ellipse 120% 50% at 50% 0%, #1b1d3a 0%, rgb(27 29 58 / 0) 100%);
+  background-size: auto;
+  background-repeat: no-repeat;
+}
+
+/*
+ * The sheet overlay carries its own `data-theme` (it renders in a portal), so it would also inherit
+ * the themed background image (rays or dots) and hide the page it should only dim. Only the dim
+ * color of the overlay must stay. Report to the owner of `shared/ui/components/sheet`.
+ */
+.sheet-overlay[data-theme] {
+  background-image: none;
+}
