@@ -1,21 +1,37 @@
+import { ArenaCardFrame } from '#/features/match/reveal/components/arena-card/arena-card-frame.component.tsx';
+import { ArenaCardRibbon } from '#/features/match/reveal/components/arena-card/arena-card-ribbon.component.tsx';
+import { ArenaCardWord } from '#/features/match/reveal/components/arena-card/arena-card-word.component.tsx';
 import type { CardFrontProps } from '#/features/match/reveal/types/card-front-props.type.ts';
 
-// Stub: the front exists only while the card is held (FlipCard calls renderFront just then).
+const IMPOSTOR_TITLE = 'Você é o impostor';
+
+// The front exists only while the card is held (FlipCard calls renderFront just then).
+// Both roles share the frame, the window and the bottom plate, so the silhouette gives nothing away;
+// only the text differs. The hint appears only on the impostor card, and only when it is given.
 export function ArenaCardFront({ role, word, hint, accentColor }: CardFrontProps) {
+  const isImpostor = role === 'impostor';
+  const title = isImpostor ? IMPOSTOR_TITLE : (word ?? '');
+  const footer = isImpostor ? (hint ?? 'Finja que sabe a palavra') : 'Não deixe ninguém ver';
+  const showHintLabel = isImpostor && Boolean(hint);
+
   return (
-    <div
-      className="flex aspect-[3/4] w-full flex-col items-center justify-center gap-2 rounded-card bg-surface text-text shadow-card"
-      style={accentColor ? { borderColor: accentColor, borderWidth: 4 } : undefined}
-      data-card="arena-front"
-    >
-      {role === 'impostor' ? (
-        <p className="font-display text-2xl">Você é o impostor</p>
-      ) : (
-        <>
-          <p className="font-display text-2xl">{word}</p>
-          {hint ? <p className="text-text-muted">{hint}</p> : null}
-        </>
-      )}
-    </div>
+    <ArenaCardFrame card="arena-front">
+      <ArenaCardRibbon>{isImpostor ? 'Seu papel' : 'A palavra é'}</ArenaCardRibbon>
+      <div className="arena-card__window">
+        <ArenaCardWord text={title} />
+      </div>
+      <div
+        className="arena-card__plate"
+        style={accentColor ? { boxShadow: `inset 0 0 0 0.9cqw ${accentColor}` } : undefined}
+      >
+        {showHintLabel ? <span className="arena-card__plate-label">Dica</span> : null}
+        <p
+          className="arena-card__plate-text"
+          style={{ fontSize: `${footer.length > 26 ? 4.6 : 5.4}cqw` }}
+        >
+          {footer}
+        </p>
+      </div>
+    </ArenaCardFrame>
   );
 }

@@ -1,0 +1,335 @@
+/*
+ * Arena card faces. Everything here is specific to the card (frame layers, shine, ribbons);
+ * fonts and the card shadow come from the theme tokens. Sizes are in `cqw` (1% of the card width)
+ * so the card scales as a whole from 375 px up to the desktop cap.
+ */
+.arena-card {
+  --ac-gold-light: #fff4b0;
+  --ac-gold: #ffd22e;
+  --ac-gold-dark: #f7a81b;
+  --ac-gold-deep: #e0720c;
+  --ac-ink: #0a1a47;
+  --ac-ink-deep: #040c24;
+  --ac-blue: #2f6fea;
+  --ac-blue-dark: #173f9e;
+  --ac-sky: #5fb4ff;
+  --ac-field-top: #1b3b8a;
+  --ac-field-bottom: #0b1b44;
+  --ac-text: #f4f8ff;
+  --ac-display: var(--theme-font-display, 'Lilita One', system-ui, sans-serif);
+
+  position: relative;
+  container-type: inline-size;
+  box-sizing: border-box;
+  width: min(100%, 22rem);
+  aspect-ratio: 5 / 7;
+  margin-inline: auto;
+  padding: 1.2cqw;
+  border-radius: 7cqw;
+  background: var(--ac-ink);
+  /* the solid slab under the card is its thickness */
+  box-shadow:
+    0 1.6cqw 0 var(--ac-ink-deep),
+    var(--theme-shadow-card, 0 8px 20px rgb(0 0 0 / 0.45));
+  color: var(--ac-text);
+  font-family: var(--theme-font-body, system-ui, sans-serif);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.arena-card__gold {
+  box-sizing: border-box;
+  height: 100%;
+  padding: 2.4cqw;
+  border-radius: 6cqw;
+  background: linear-gradient(
+    165deg,
+    var(--ac-gold-light) 0%,
+    var(--ac-gold) 28%,
+    var(--ac-gold-dark) 62%,
+    var(--ac-gold-deep) 100%
+  );
+  box-shadow:
+    inset 0 0.7cqw 0 rgb(255 255 255 / 0.55),
+    inset 0 -0.9cqw 0 var(--ac-gold-deep);
+}
+
+.arena-card__ink {
+  box-sizing: border-box;
+  height: 100%;
+  padding: 0.9cqw;
+  border-radius: 4.2cqw;
+  background: var(--ac-ink);
+}
+
+.arena-card__field {
+  position: relative;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: auto 1fr 22cqw;
+  gap: 4cqw;
+  height: 100%;
+  padding: 4cqw 4.5cqw 4.5cqw;
+  overflow: hidden;
+  border-radius: 3.4cqw;
+  background:
+    repeating-linear-gradient(135deg, rgb(255 255 255 / 0.04) 0 2.2cqw, transparent 2.2cqw 4.4cqw),
+    radial-gradient(ellipse at 50% 28%, var(--ac-field-top) 0%, var(--ac-field-bottom) 78%);
+  box-shadow: inset 0 0 9cqw rgb(4 12 36 / 0.65);
+}
+
+/* One shine sweep every few seconds: transform only, off with reduced motion. */
+.arena-card__field::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -60%;
+  width: 40%;
+  background: linear-gradient(100deg, transparent, rgb(255 255 255 / 0.2), transparent);
+  transform: skewX(-18deg) translateX(0);
+  animation: arena-card-sheen 5s ease-in-out 1.2s infinite;
+  pointer-events: none;
+}
+
+@keyframes arena-card-sheen {
+  0% {
+    transform: skewX(-18deg) translateX(0);
+  }
+  32%,
+  100% {
+    transform: skewX(-18deg) translateX(520%);
+  }
+}
+
+.arena-card__gem {
+  position: absolute;
+  width: 6cqw;
+  height: 6cqw;
+  box-sizing: border-box;
+  border-radius: 50%;
+  border: 0.9cqw solid var(--ac-ink);
+  background: radial-gradient(
+    circle at 35% 30%,
+    #d8eeff 0 12%,
+    var(--ac-sky) 40%,
+    var(--ac-blue) 100%
+  );
+  box-shadow: 0 0.6cqw 0 var(--ac-ink-deep);
+}
+.arena-card__gem[data-corner='tl'] {
+  top: 0.6cqw;
+  left: 0.6cqw;
+}
+.arena-card__gem[data-corner='tr'] {
+  top: 0.6cqw;
+  right: 0.6cqw;
+}
+.arena-card__gem[data-corner='bl'] {
+  bottom: 0.6cqw;
+  left: 0.6cqw;
+}
+.arena-card__gem[data-corner='br'] {
+  bottom: 0.6cqw;
+  right: 0.6cqw;
+}
+
+/* Notched ribbon; the dark slab under it is a second clipped layer, not a filter. */
+.arena-card__ribbon-wrap {
+  position: relative;
+  justify-self: center;
+  margin-bottom: 1cqw;
+}
+.arena-card__ribbon-wrap::before {
+  content: '';
+  position: absolute;
+  top: 1cqw;
+  right: 0;
+  bottom: -1cqw;
+  left: 0;
+  background: var(--ac-ink);
+  clip-path: polygon(0 0, 100% 0, 96% 50%, 100% 100%, 0 100%, 4% 50%);
+}
+.arena-card__ribbon {
+  position: relative;
+  box-sizing: border-box;
+  min-width: 52cqw;
+  padding: 1.6cqw 9cqw 2cqw;
+  text-align: center;
+  font-family: var(--ac-display);
+  font-size: 6.2cqw;
+  line-height: 1.15;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ac-text);
+  background: linear-gradient(180deg, #4f8cff 0%, var(--ac-blue) 45%, var(--ac-blue-dark) 100%);
+  clip-path: polygon(0 0, 100% 0, 96% 50%, 100% 100%, 0 100%, 4% 50%);
+  -webkit-text-stroke: 1.2cqw var(--ac-ink);
+  paint-order: stroke fill;
+  text-shadow: 0 0.6cqw 0 var(--ac-ink);
+}
+
+/* The recessed window where the big word (or the medallion) sits. */
+.arena-card__window {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  padding: 3cqw;
+  border-radius: 4cqw;
+  background: linear-gradient(180deg, rgb(4 12 36 / 0.62), rgb(11 27 68 / 0.35));
+  box-shadow:
+    inset 0 0 0 0.9cqw var(--ac-ink),
+    inset 0 0 0 1.6cqw rgb(255 210 46 / 0.55),
+    inset 0 2.4cqw 5cqw rgb(4 12 36 / 0.7);
+}
+
+/* The big lettering: heavy font, outline behind the fill, a solid slab under it. */
+.arena-card__word {
+  margin: 0;
+  max-width: 100%;
+  text-align: center;
+  font-family: var(--ac-display);
+  line-height: 1.04;
+  text-transform: uppercase;
+  text-wrap: balance;
+  overflow-wrap: break-word;
+  color: var(--ac-gold);
+  -webkit-text-stroke: 2.2cqw var(--ac-ink);
+  paint-order: stroke fill;
+  text-shadow: 0 1.4cqw 0 var(--ac-ink-deep);
+}
+
+.arena-card__plate {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  padding: 2.4cqw 4cqw;
+  border-radius: 3.4cqw;
+  text-align: center;
+  background: linear-gradient(180deg, #2a55b8, var(--ac-blue-dark));
+  box-shadow:
+    inset 0 0 0 0.9cqw var(--ac-ink),
+    inset 0 1.8cqw 0 rgb(255 255 255 / 0.1),
+    0 1cqw 0 var(--ac-ink-deep);
+}
+.arena-card__plate-text {
+  margin: 0;
+  line-height: 1.18;
+  font-weight: 600;
+  color: var(--ac-text);
+  text-wrap: balance;
+}
+.arena-card__plate-label {
+  position: absolute;
+  top: -3.4cqw;
+  left: 5cqw;
+  padding: 0.4cqw 3.4cqw 0.8cqw;
+  border-radius: 2cqw;
+  font-family: var(--ac-display);
+  font-size: 4.6cqw;
+  line-height: 1.1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ac-ink);
+  background: linear-gradient(
+    180deg,
+    var(--ac-gold-light),
+    var(--ac-gold) 55%,
+    var(--ac-gold-dark)
+  );
+  box-shadow:
+    0 0 0 0.9cqw var(--ac-ink),
+    0 1.2cqw 0 0.9cqw var(--ac-ink-deep);
+}
+
+/* Back: medallion with rays and the press icon. */
+.arena-card__rays {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: repeating-conic-gradient(
+    from 0deg at 50% 50%,
+    rgb(255 210 46 / 0.1) 0deg 9deg,
+    transparent 9deg 18deg
+  );
+  mask-image: radial-gradient(circle at 50% 50%, #000 0%, transparent 72%);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 0%, transparent 72%);
+}
+.arena-card__medallion {
+  position: relative;
+  width: 50cqw;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  clip-path: polygon(30% 0, 70% 0, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0 70%, 0 30%);
+  background: linear-gradient(
+    160deg,
+    var(--ac-gold-light),
+    var(--ac-gold) 35%,
+    var(--ac-gold-deep)
+  );
+}
+.arena-card__medallion-inner {
+  width: 86%;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  clip-path: polygon(30% 0, 70% 0, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0 70%, 0 30%);
+  background: radial-gradient(circle at 50% 30%, #3b78f0, var(--ac-blue-dark) 80%);
+  box-shadow: inset 0 0 0 2cqw var(--ac-ink);
+}
+.arena-card__mark {
+  font-family: var(--ac-display);
+  font-size: 30cqw;
+  line-height: 1;
+  color: var(--ac-gold);
+  -webkit-text-stroke: 2.4cqw var(--ac-ink);
+  paint-order: stroke fill;
+  text-shadow: 0 1.4cqw 0 var(--ac-ink-deep);
+}
+.arena-card__press {
+  display: flex;
+  align-items: center;
+  gap: 3cqw;
+  font-weight: 700;
+  font-size: 5.6cqw;
+  line-height: 1.15;
+  color: var(--ac-text);
+}
+.arena-card__press-icon {
+  flex: none;
+  width: 11cqw;
+  height: 11cqw;
+}
+.arena-card__ripple {
+  transform-origin: 50% 50%;
+  animation: arena-card-ripple 2.2s ease-out infinite;
+}
+@keyframes arena-card-ripple {
+  0% {
+    opacity: 0.9;
+    transform: scale(0.7);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.25);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arena-card__field::after {
+    animation: none;
+    opacity: 0;
+  }
+  .arena-card__ripple {
+    animation: none;
+    opacity: 0.5;
+    transform: none;
+  }
+}
