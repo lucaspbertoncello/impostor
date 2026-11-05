@@ -1,5 +1,3 @@
-import '#/features/match/round/styles/sheet-backdrop.css';
-
 import type { ThemeName } from '#/shared/types/theme-name.type.ts';
 import { Button } from '#/shared/ui/components/button/button.component.tsx';
 import { Sheet } from '#/shared/ui/components/sheet/sheet.component.tsx';

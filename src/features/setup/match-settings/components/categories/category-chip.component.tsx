@@ -19,7 +19,7 @@ const BASE_CLASSES = [
   'group flex w-full cursor-pointer select-none items-start gap-2 text-left outline-none',
   'rounded-md border-solid [border-width:var(--theme-outline-width)]',
   'transition-[transform,box-shadow,background-color] duration-100 ease-out',
-  'data-[focus-visible]:outline-[3px] data-[focus-visible]:outline-offset-[3px] data-[focus-visible]:outline-ring',
+  'data-[focus-visible]:outline-solid data-[focus-visible]:outline-[3px] data-[focus-visible]:outline-offset-[3px] data-[focus-visible]:outline-ring',
   'data-[pressed]:translate-y-0.5',
 ].join(' ');
 

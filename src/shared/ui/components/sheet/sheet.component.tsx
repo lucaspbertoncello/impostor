@@ -43,7 +43,7 @@ export function Sheet({
       onOpenChange={onOpenChange}
       isDismissable={isDismissable}
       isKeyboardDismissDisabled={!isDismissable}
-      className="sheet-overlay fixed inset-0 z-50 flex items-end justify-center bg-[rgb(4_8_28/0.72)] font-body text-text md:items-center"
+      className="sheet-overlay fixed inset-0 z-50 flex items-end justify-center font-body text-text md:items-center"
     >
       <Modal className="sheet-panel w-full max-w-[480px] md:max-w-[440px] md:px-0">
         <Dialog

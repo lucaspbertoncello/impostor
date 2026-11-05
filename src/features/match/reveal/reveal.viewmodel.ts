@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useRevealModel } from '#/features/match/reveal/reveal.model.ts';
 import type { RevealViewProps } from '#/features/match/reveal/types/reveal-view-props.type.ts';
 import type { ThemeName } from '#/shared/types/theme-name.type.ts';
+import { keepLiveAnnouncerEmpty } from '#/shared/ui/utils/live-announcer/keep-live-announcer-empty.util.ts';
 
 /**
  * Adapts the model to the View: the exit sheet (the "x" and the browser back, RF-GER-004/005) and the
@@ -22,6 +23,9 @@ export function useRevealViewModel(mode: ThemeName): RevealViewProps | null {
     enableBeforeUnload: false,
     withResolver: true,
   });
+
+  // Nothing from the previous screen may stay in the page text of the pass step (BR-MAT-045).
+  useEffect(() => keepLiveAnnouncerEmpty(), []);
 
   const isExitOpen = isExitRequested || blocker.status === 'blocked';
 
@@ -71,8 +75,10 @@ export function useRevealViewModel(mode: ThemeName): RevealViewProps | null {
     onKeepPlaying: closeExit,
     onConfirmExit: () => {
       setIsExitRequested(false);
-      if (blocker.status === 'blocked') blocker.reset();
       isLeaving.current = true;
+      // Back already moved the address to the previous screen; let it land, then the effect above
+      // replaces it with `/`. A `reset()` here would restore `/reveal` after that replace.
+      if (blocker.status === 'blocked') blocker.proceed();
       model.clearStep();
       model.discardRound();
     },

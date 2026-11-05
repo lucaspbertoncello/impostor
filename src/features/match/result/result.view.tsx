@@ -1,6 +1,7 @@
 import { ArenaResultWord } from '#/features/match/result/components/arena-result-word.component.tsx';
 import { HintPanel } from '#/features/match/result/components/hint-panel.component.tsx';
 import { ImpostorList } from '#/features/match/result/components/impostor-list.component.tsx';
+import { ResultSecondaryActions } from '#/features/match/result/components/result-secondary-actions.component.tsx';
 import { PartyResultWord } from '#/features/match/result/components/party-result-word.component.tsx';
 import { ResultDock } from '#/features/match/result/components/result-dock.component.tsx';
 import type { ResultPlayer } from '#/features/match/result/types/result-player.type.ts';
@@ -12,7 +13,6 @@ export type ResultViewProps = {
   theme: ThemeName;
   word: string;
   categoryName: string;
-  categoryColor: string | null;
   impostors: ResultPlayer[];
   /** `null` when the hint was off: the line does not appear (RF-RES-005). */
   hint: string | null;
@@ -26,7 +26,6 @@ export function ResultView({
   theme,
   word,
   categoryName,
-  categoryColor,
   impostors,
   hint,
   onNewRound,
@@ -40,20 +39,15 @@ export function ResultView({
         {theme === 'arena' ? (
           <ArenaResultWord word={word} />
         ) : (
-          <PartyResultWord word={word} categoryName={categoryName} categoryColor={categoryColor} />
+          <PartyResultWord word={word} categoryName={categoryName} />
         )}
         <ImpostorList theme={theme} impostors={impostors} />
         {hint === null ? null : <HintPanel hint={hint} />}
+        <ResultSecondaryActions onChangeSettings={onChangeSettings} onSwitchMode={onSwitchMode} />
       </main>
       <ResultDock>
         <Button variant="primary" size="lg" fullWidth onPress={onNewRound}>
           Nova rodada
-        </Button>
-        <Button variant="secondary" fullWidth onPress={onChangeSettings}>
-          Mudar configuração
-        </Button>
-        <Button variant="secondary" fullWidth onPress={onSwitchMode}>
-          Trocar modo
         </Button>
       </ResultDock>
     </div>

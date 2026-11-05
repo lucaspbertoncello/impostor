@@ -1,3 +1,14 @@
+/*
+ * The overlay carries its own `data-theme` (it renders in a portal), so it would inherit the page
+ * background of the theme (rays or dots) and hide the screen it only has to dim. Here it is a
+ * plain dark veil, the same in both themes, with no image. Specificity (0,2,0) beats the single
+ * attribute selector of the theme files.
+ */
+.sheet-overlay[data-theme] {
+  background-color: rgb(4 8 28 / 0.72);
+  background-image: none;
+}
+
 /* Sheet motion (React Aria sets data-entering / data-exiting on the overlay and the modal). */
 @keyframes sheet-fade {
   from {

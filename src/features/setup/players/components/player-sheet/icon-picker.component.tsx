@@ -20,7 +20,7 @@ const CELL_CLASSES = [
   'border-solid border-transparent [border-width:var(--theme-outline-width)]',
   'transition-[transform,box-shadow,border-color] duration-100 ease-out',
   'data-[selected]:border-primary data-[selected]:bg-surface',
-  'data-[focus-visible]:outline-[3px] data-[focus-visible]:outline-offset-2 data-[focus-visible]:outline-ring',
+  'data-[focus-visible]:outline-solid data-[focus-visible]:outline-[3px] data-[focus-visible]:outline-offset-2 data-[focus-visible]:outline-ring',
   'data-[pressed]:translate-y-0.5',
 ].join(' ');
 

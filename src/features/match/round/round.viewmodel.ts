@@ -57,9 +57,16 @@ export function useRoundViewModel(mode: ThemeName): RoundViewProps | null {
 
   function confirmExit() {
     isLeaving.current = true;
-    closeExitSheet();
+    setExitRequested(false);
     discardRound(mode);
-    void navigate({ to: '/' });
+    if (blocker.status === 'blocked') {
+      // Back already moved the address to the previous screen: let it land, then replace it with `/`
+      // (a `reset()` would put `/round` back after the navigation below).
+      blocker.proceed();
+      setTimeout(() => void navigate({ to: '/', replace: true }), 0);
+    } else {
+      void navigate({ to: '/' });
+    }
   }
 
   return {

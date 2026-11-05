@@ -10,12 +10,3 @@
   background-size: auto;
   background-repeat: no-repeat;
 }
-
-/*
- * The sheet overlay carries its own `data-theme` (it renders in a portal), so it would also inherit
- * the themed background image (rays or dots) and hide the page it should only dim. Only the dim
- * color of the overlay must stay. Report to the owner of `shared/ui/components/sheet`.
- */
-.sheet-overlay[data-theme] {
-  background-image: none;
-}

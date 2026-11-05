@@ -15,10 +15,7 @@ export function MatchSettingsView(props: MatchSettingsViewProps) {
 
   return (
     <div className="flex flex-1 flex-col">
-      {/* The Arena plaque cuts "CONFIGURAÇÃO" at 320 px; a smaller title there is the way around it without touching shared/ui. */}
-      <div className="max-[360px]:[&_h1]:text-[22px]">
-        <ScreenHeader theme={theme} title={SETTINGS_COPY.title} onBack={props.onBack} />
-      </div>
+      <ScreenHeader theme={theme} title={SETTINGS_COPY.title} onBack={props.onBack} />
 
       <main className="flex flex-1 flex-col gap-6 px-4 pt-4 pb-8">
         <ImpostorSection

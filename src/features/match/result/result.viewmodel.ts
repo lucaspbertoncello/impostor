@@ -53,7 +53,6 @@ export function useResultViewModel(mode: ThemeName): ResultViewProps | null {
     theme: mode,
     word: result.word,
     categoryName: result.categoryName,
-    categoryColor: result.categoryColor,
     impostors: result.impostors,
     hint: result.hint,
     onNewRound: newRound,

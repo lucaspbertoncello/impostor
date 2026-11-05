@@ -34,11 +34,18 @@ export function ResumeStrip({ item, onContinue, onDiscard }: ResumeStripProps) {
           {players}
         </p>
       </div>
-      <div data-theme={item.mode} className="flex gap-3 bg-transparent! bg-none! pb-1.5">
-        <Button onPress={onContinue} className="min-w-0 flex-1 px-3">
+      <div
+        data-theme={item.mode}
+        className="flex flex-col gap-4 bg-transparent! bg-none! pb-1.5 min-[360px]:flex-row min-[360px]:gap-3"
+      >
+        <Button onPress={onContinue} className="min-w-0 px-3 min-[360px]:flex-1">
           Continuar
         </Button>
-        <Button variant="secondary" onPress={onDiscard} className="min-w-0 flex-1 px-3">
+        <Button
+          variant="ghost"
+          onPress={onDiscard}
+          className="px-3 text-[16px]! min-[360px]:flex-none"
+        >
           Descartar
         </Button>
       </div>
