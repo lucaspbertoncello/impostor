@@ -16,7 +16,7 @@ export function PartyCardBack() {
 
   return (
     <div
-      className="relative mx-auto w-full max-w-[22.5rem] overflow-hidden rounded-card font-display"
+      className="relative mx-auto w-full max-w-[22.5rem] overflow-hidden rounded-card font-display [container-type:inline-size]"
       style={{
         aspectRatio: PARTY_CARD_ASPECT,
         backgroundColor: PARTY_CARD_COLORS.indigo,
@@ -62,17 +62,21 @@ export function PartyCardBack() {
         <motion.span
           key={delay}
           aria-hidden="true"
-          className="pointer-events-none absolute left-1/2 top-[44.3%] size-[24%] -translate-x-1/2 -translate-y-1/2 rounded-full border-4"
+          className="pointer-events-none absolute left-1/2 top-[44.3%] aspect-square w-[34%] -translate-x-1/2 -translate-y-1/2 rounded-full border-4"
           style={{ borderColor: PARTY_CARD_COLORS.sun }}
           initial={{ scale: 1, opacity: reduceMotion ? 0.35 : 0 }}
-          animate={reduceMotion ? undefined : { scale: [1, 2.1], opacity: [0.8, 0] }}
+          animate={reduceMotion ? undefined : { scale: [1, 1.7], opacity: [0.8, 0] }}
           transition={{ duration: 2.1, delay, repeat: Infinity, ease: 'easeOut' }}
         />
       ))}
 
       <div
-        className="absolute inset-x-6 bottom-6 flex h-14 items-center justify-center rounded-md text-xl font-bold"
-        style={{ backgroundColor: PARTY_CARD_COLORS.sun, color: PARTY_CARD_COLORS.ink }}
+        className="absolute inset-x-6 bottom-6 flex min-h-14 items-center justify-center rounded-md px-4 py-2 text-center font-bold leading-tight"
+        style={{
+          backgroundColor: PARTY_CARD_COLORS.sun,
+          color: PARTY_CARD_COLORS.ink,
+          fontSize: 'clamp(15px, 6.4cqw, 22px)',
+        }}
       >
         Segure para virar
       </div>

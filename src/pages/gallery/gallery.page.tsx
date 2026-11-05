@@ -21,6 +21,17 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
   );
 }
 
+const CARD_FACES = {
+  crew: { role: 'crew', word: 'Exército de Esqueletos' },
+  'impostor-hint': { role: 'impostor', hint: 'Brincadeira de criança' },
+  impostor: { role: 'impostor' },
+} as const;
+
+function CardFace({ isArena, face }: { isArena: boolean; face: keyof typeof CARD_FACES }) {
+  const props = CARD_FACES[face];
+  return isArena ? <ArenaCardFront {...props} /> : <PartyCardFront {...props} />;
+}
+
 // Development-only page: every piece of the visual system in the current theme, for the captures.
 // Switch the theme with `?theme=arena|party` (or the links on top).
 export function GalleryPage() {
@@ -92,10 +103,28 @@ export function GalleryPage() {
       </Section>
 
       <Section title="Carta: verso (virada) e frente (segura)">
-        <div className="grid grid-cols-2 gap-3">
-          {isArena ? <ArenaCardBack /> : <PartyCardBack />}
-          {isArena ? <ArenaCardFront {...secret} /> : <PartyCardFront {...secret} />}
-          {isArena ? <ArenaCardFront role="impostor" /> : <PartyCardFront role="impostor" />}
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          {(
+            [
+              { caption: 'Verso (igual para todos)', face: 'back' },
+              { caption: 'Frente: palavra', face: 'crew' },
+              { caption: 'Frente: impostor com dica', face: 'impostor-hint' },
+              { caption: 'Frente: impostor sem dica', face: 'impostor' },
+            ] as const
+          ).map(({ caption, face }) => (
+            <figure key={face} className="flex flex-col gap-2">
+              <figcaption className="text-base text-text-muted">{caption}</figcaption>
+              {face === 'back' ? (
+                isArena ? (
+                  <ArenaCardBack />
+                ) : (
+                  <PartyCardBack />
+                )
+              ) : (
+                <CardFace isArena={isArena} face={face} />
+              )}
+            </figure>
+          ))}
         </div>
       </Section>
 

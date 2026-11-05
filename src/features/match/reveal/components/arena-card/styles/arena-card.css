@@ -177,7 +177,12 @@
   align-items: center;
   justify-content: center;
   min-height: 0;
-  padding: 3cqw;
+  /*
+   * The ribbon above is shorter than the plate below, so the middle of the window sits above the
+   * middle of the card. The extra top padding moves the word (or the medallion) down by half of
+   * the difference, which centers it on the card.
+   */
+  padding: 19cqw 3cqw 3cqw;
   border-radius: 4cqw;
   background: linear-gradient(180deg, rgb(4 12 36 / 0.62), rgb(11 27 68 / 0.35));
   box-shadow:
@@ -206,10 +211,12 @@
   position: relative;
   box-sizing: border-box;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 1.2cqw;
   min-height: 0;
-  padding: 2.4cqw 4cqw;
+  padding: 2cqw 4cqw;
   border-radius: 3.4cqw;
   text-align: center;
   background: linear-gradient(180deg, #2a55b8, var(--ac-blue-dark));
@@ -226,10 +233,7 @@
   text-wrap: balance;
 }
 .arena-card__plate-label {
-  position: absolute;
-  top: -3.4cqw;
-  left: 5cqw;
-  padding: 0.4cqw 3.4cqw 0.8cqw;
+  padding: 0.2cqw 3.4cqw 0.6cqw;
   border-radius: 2cqw;
   font-family: var(--ac-display);
   font-size: 4.6cqw;
@@ -243,9 +247,7 @@
     var(--ac-gold) 55%,
     var(--ac-gold-dark)
   );
-  box-shadow:
-    0 0 0 0.9cqw var(--ac-ink),
-    0 1.2cqw 0 0.9cqw var(--ac-ink-deep);
+  box-shadow: 0 0 0 0.7cqw var(--ac-ink);
 }
 
 /* Back: medallion with rays and the press icon. */

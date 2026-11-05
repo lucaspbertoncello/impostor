@@ -8,7 +8,8 @@ const IMPOSTOR_TITLE = 'Você é o impostor';
 // The front exists only while the card is held (FlipCard calls renderFront just then).
 // Both roles share the frame, the window and the bottom plate, so the silhouette gives nothing away;
 // only the text differs. The hint appears only on the impostor card, and only when it is given.
-export function ArenaCardFront({ role, word, hint, accentColor }: CardFrontProps) {
+// `accentColor` is in the contract but ignored: tinting only the crew plate would show the role from afar.
+export function ArenaCardFront({ role, word, hint }: CardFrontProps) {
   const isImpostor = role === 'impostor';
   const title = isImpostor ? IMPOSTOR_TITLE : (word ?? '');
   const footer = isImpostor ? (hint ?? 'Finja que sabe a palavra') : 'Não deixe ninguém ver';
@@ -20,10 +21,7 @@ export function ArenaCardFront({ role, word, hint, accentColor }: CardFrontProps
       <div className="arena-card__window">
         <ArenaCardWord text={title} />
       </div>
-      <div
-        className="arena-card__plate"
-        style={accentColor ? { boxShadow: `inset 0 0 0 0.9cqw ${accentColor}` } : undefined}
-      >
+      <div className="arena-card__plate">
         {showHintLabel ? <span className="arena-card__plate-label">Dica</span> : null}
         <p
           className="arena-card__plate-text"

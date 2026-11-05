@@ -15,9 +15,12 @@ const IMPOSTOR_HEADLINE_CQW = 15;
 // afar cannot tell crew from impostor. Only the text differs.
 const FRONT_LOOK = { background: PARTY_CARD_COLORS.coral, text: PARTY_CARD_COLORS.ink };
 
+// Solid ink pill with cream text: readable over any shape behind it (the yellow circle included).
+const LABEL_STYLE = { backgroundColor: PARTY_CARD_COLORS.ink, color: PARTY_CARD_COLORS.cream };
+
 // The front exists only while the card is held (FlipCard calls renderFront just then; BR-MAT-045).
-// Both roles share size, shapes and the vertical layout: label on top, big text in the middle,
-// a reserved strip at the bottom (the impostor's hint, empty on the crew card).
+// Both roles share size, shapes and layout: label on top, the big text centered on the whole card,
+// and a strip at the base for the impostor's hint (empty on the crew card).
 // `accentColor` is in the contract but ignored on purpose: a color per category would reveal the
 // role from afar (crew colored, impostor not), so both faces use the same color.
 export function PartyCardFront({ role, word, hint }: CardFrontProps) {
@@ -36,7 +39,7 @@ export function PartyCardFront({ role, word, hint }: CardFrontProps) {
 
   return (
     <div
-      className="relative mx-auto flex w-full max-w-[22.5rem] flex-col overflow-hidden rounded-card p-6 font-display [container-type:inline-size]"
+      className="relative mx-auto w-full max-w-[22.5rem] overflow-hidden rounded-card font-display [container-type:inline-size]"
       style={{
         aspectRatio: PARTY_CARD_ASPECT,
         backgroundColor: FRONT_LOOK.background,
@@ -51,11 +54,15 @@ export function PartyCardFront({ role, word, hint }: CardFrontProps) {
         diamond={{ fill: PARTY_CARD_COLORS.sun, opacity: 1 }}
       />
 
-      <p className="relative z-10 w-fit rounded-md bg-current/15 px-3 py-1 text-base font-semibold">
+      <p
+        className="absolute left-6 top-6 z-10 rounded-md px-3 py-1 text-base font-semibold"
+        style={LABEL_STYLE}
+      >
         <span>{label}</span>
       </p>
 
-      <div className="relative z-10 flex flex-1 items-center justify-center text-center">
+      {/* The text block is centered on the whole card, not on the space left by label and hint. */}
+      <div className="absolute inset-x-6 top-1/2 z-10 flex -translate-y-1/2 justify-center text-center">
         {isImpostor ? (
           <motion.p
             className="font-bold leading-[1.05]"
@@ -76,11 +83,18 @@ export function PartyCardFront({ role, word, hint }: CardFrontProps) {
         )}
       </div>
 
-      <div className="relative z-10 flex min-h-24 flex-col items-center justify-end gap-1 text-center">
+      <div className="absolute inset-x-[14cqw] bottom-6 z-10 flex flex-col items-center justify-end gap-2 text-center">
         {isImpostor && hint ? (
           <>
-            <span className="rounded-md bg-current/15 px-2 py-0.5 text-sm font-semibold">Dica</span>
-            <p className="text-xl font-semibold leading-tight [overflow-wrap:anywhere]">{hint}</p>
+            <span className="rounded-md px-3 py-0.5 text-base font-semibold" style={LABEL_STYLE}>
+              Dica
+            </span>
+            <p
+              className="font-semibold leading-tight [overflow-wrap:anywhere]"
+              style={{ fontSize: 'max(17px, 6cqw)' }}
+            >
+              {hint}
+            </p>
           </>
         ) : null}
       </div>

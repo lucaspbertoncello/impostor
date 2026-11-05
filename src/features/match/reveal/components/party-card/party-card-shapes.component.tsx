@@ -18,22 +18,22 @@ export function PartyCardShapes({ circle, square, diamond }: PartyCardShapesProp
     >
       <circle cx="98" cy="12" r="36" fill={circle.fill} fillOpacity={circle.opacity} />
       <rect
-        x="-16"
-        y="112"
-        width="44"
-        height="44"
+        x="-26"
+        y="116"
+        width="36"
+        height="36"
         rx="9"
-        transform="rotate(12 6 134)"
+        transform="rotate(12 -8 134)"
         fill={square.fill}
         fillOpacity={square.opacity}
       />
       <rect
-        x="79"
-        y="107"
+        x="7"
+        y="25"
         width="10"
         height="10"
         rx="2"
-        transform="rotate(45 84 112)"
+        transform="rotate(45 12 30)"
         fill={diamond.fill}
         fillOpacity={diamond.opacity}
       />
