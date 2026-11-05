@@ -51,7 +51,6 @@ export function useRevealViewModel(mode: ThemeName): RevealViewProps | null {
 
   return {
     theme: mode,
-    phase: model.phase,
     cardKey,
     player: { name: card.player.name, iconIndex: card.player.iconIndex },
     cardNumber: card.cardNumber,
@@ -60,13 +59,12 @@ export function useRevealViewModel(mode: ThemeName): RevealViewProps | null {
     seen: card.seen,
     readSecret: model.readSecret,
     isExitOpen,
-    onIAm: () => model.enterCard(cardKey),
     onFirstReveal: () => {
       model.markCardSeen();
     },
     onNext: () => {
       if (card.isLast) {
-        if (model.goToRound()) model.clearStep();
+        model.goToRound();
       } else {
         model.advanceCard();
       }
@@ -79,7 +77,6 @@ export function useRevealViewModel(mode: ThemeName): RevealViewProps | null {
       // Back already moved the address to the previous screen; let it land, then the effect above
       // replaces it with `/`. A `reset()` here would restore `/reveal` after that replace.
       if (blocker.status === 'blocked') blocker.proceed();
-      model.clearStep();
       model.discardRound();
     },
   };

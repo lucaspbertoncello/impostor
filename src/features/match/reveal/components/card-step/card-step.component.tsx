@@ -4,15 +4,17 @@ import { ArenaCardBack } from '#/features/match/reveal/components/arena-card/are
 import { ArenaCardFront } from '#/features/match/reveal/components/arena-card/arena-card-front.component.tsx';
 import { PartyCardBack } from '#/features/match/reveal/components/party-card/party-card-back.component.tsx';
 import { PartyCardFront } from '#/features/match/reveal/components/party-card/party-card-front.component.tsx';
+import { PlayerTurn } from '#/features/match/reveal/components/player-turn/player-turn.component.tsx';
 import { RevealFooter } from '#/features/match/reveal/components/reveal-footer/reveal-footer.component.tsx';
 import type { CardFrontProps } from '#/features/match/reveal/types/card-front-props.type.ts';
 import { FlipCard } from '#/shared/components/flip-card/flip-card.component.tsx';
+import type { PlayerIconIndex } from '#/shared/types/player-icon-index.type.ts';
 import type { ThemeName } from '#/shared/types/theme-name.type.ts';
 import { Button } from '#/shared/ui/components/button/button.component.tsx';
 
 type CardStepProps = {
   theme: ThemeName;
-  playerName: string;
+  player: { name: string; iconIndex: PlayerIconIndex };
   cardNumber: number;
   cardCount: number;
   isLast: boolean;
@@ -25,20 +27,21 @@ type CardStepProps = {
 const HELPER_ID = 'reveal-next-helper';
 
 // The card is as wide as the phone allows, but never taller than the screen leaves for it.
-const CARD_WIDTH = 'min(100%, max(216px, calc((100dvh - 304px) * 5 / 7)))';
+const CARD_WIDTH = 'min(100%, max(168px, calc((100dvh - var(--reveal-chrome)) * 5 / 7)))';
 
 function Front({ theme, secret }: { theme: ThemeName; secret: CardFrontProps }): ReactNode {
   return theme === 'arena' ? <ArenaCardFront {...secret} /> : <PartyCardFront {...secret} />;
 }
 
 /**
- * The face-down card and the "Próximo" button (RF-REV-001/002/004). The secret is read only inside
+ * The whole turn of one player: who holds the phone, the face-down card and the "Próximo" button
+ * (RF-REV-001/002/004). The secret is read only inside
  * `renderFront`, which the FlipCard calls only while the card is held (BR-MAT-045/046): face down, nothing
  * secret is in the DOM or in a prop.
  */
 export function CardStep({
   theme,
-  playerName,
+  player,
   cardNumber,
   cardCount,
   isLast,
@@ -49,10 +52,14 @@ export function CardStep({
 }: CardStepProps) {
   return (
     <>
-      <section className="flex flex-1 flex-col items-center justify-center gap-3 px-5 py-3">
-        <p className="max-w-full truncate text-center text-base font-semibold text-text-muted">
-          {playerName} · Carta {cardNumber} de {cardCount}
-        </p>
+      <section
+        className={
+          // --reveal-chrome: what the screen takes besides the card (header, turn, footer, spacing).
+          // On very short screens (old small phones) the progress bar goes and the spacing shrinks.
+          'flex flex-1 flex-col items-center justify-center gap-3 px-5 py-4 [--reveal-chrome:calc(272px+max(54px,clamp(40px,8dvh,72px)))] [@media(max-height:640px)]:py-2 [@media(max-height:640px)]:[--reveal-chrome:288px]'
+        }
+      >
+        <PlayerTurn theme={theme} player={player} cardNumber={cardNumber} cardCount={cardCount} />
         <div className="mx-auto w-full" style={{ maxWidth: CARD_WIDTH }}>
           <FlipCard
             label="Carta secreta. Segure para virar"

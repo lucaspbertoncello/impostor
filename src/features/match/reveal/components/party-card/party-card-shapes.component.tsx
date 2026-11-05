@@ -29,11 +29,11 @@ export function PartyCardShapes({ circle, square, diamond }: PartyCardShapesProp
       />
       <rect
         x="7"
-        y="25"
+        y="38"
         width="10"
         height="10"
         rx="2"
-        transform="rotate(45 12 30)"
+        transform="rotate(45 12 43)"
         fill={diamond.fill}
         fillOpacity={diamond.opacity}
       />

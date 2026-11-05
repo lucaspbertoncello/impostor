@@ -62,13 +62,6 @@ async function pressBrowserBack() {
   await screen.findByRole('dialog', { name: 'Sair da rodada?' });
 }
 
-function expectStepCleared() {
-  const saved = localStorage.getItem('impostor-reveal-step');
-  expect(
-    saved === null || (JSON.parse(saved) as { steps: { party: unknown } }).steps.party === null,
-  ).toBe(true);
-}
-
 function getCard() {
   return screen.getByRole('button', { name: /Carta secreta/ });
 }
@@ -82,7 +75,7 @@ afterEach(() => {
 });
 
 describe('reveal screen', () => {
-  it('goes through the 3 players, hiding the secret outside the hold, until "Começar partida"', async () => {
+  it('goes through the 3 players on one screen each, hiding the secret outside the hold, until "Começar partida"', async () => {
     const log = vi.spyOn(console, 'log');
     const warn = vi.spyOn(console, 'warn');
     const { router } = renderReveal();
@@ -92,25 +85,20 @@ describe('reveal screen', () => {
     const roles: string[] = [];
 
     for (const [position, name] of order.entries()) {
-      // Pass the phone: no round data at all.
-      expect(
-        await screen.findByRole('heading', { level: 2, name: `Passe o celular para ${name}` }),
-      ).toBeInTheDocument();
+      // One screen per player: name, progress and the face-down card. No round data at all.
+      expect(await screen.findByRole('heading', { level: 2, name })).toBeInTheDocument();
       expect(screen.getByText(`Carta ${position + 1} de 3`)).toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: 'Sou eu' })).not.toBeInTheDocument();
+      expect(document.body.textContent).not.toContain('Passe o celular');
       expect(document.body.textContent?.toLowerCase()).not.toContain('impostor');
+      expect(getCard()).toBeInTheDocument();
       expectNoSecretInPage();
-
-      fireEvent.click(screen.getByRole('button', { name: 'Sou eu' }));
 
       // Face-down card: "Próximo" waits for the first turn.
       const isLast = position === 2;
-      const next = await screen.findByRole('button', {
-        name: isLast ? 'Começar partida' : 'Próximo',
-      });
+      const next = screen.getByRole('button', { name: isLast ? 'Começar partida' : 'Próximo' });
       expect(next).toBeDisabled();
       expect(screen.getByText('Vire a carta para ver')).toBeInTheDocument();
-      expect(document.body.textContent).not.toContain('Você é');
-      expectNoSecretInPage();
 
       // Held: the front is in the DOM; released: gone.
       fireEvent.pointerDown(getCard(), pointer);
@@ -123,15 +111,25 @@ describe('reveal screen', () => {
 
       expect(next).toBeEnabled();
       fireEvent.click(next);
-      // The previous card is gone for good, with no animation that could show its front.
-      expect(screen.queryByRole('button', { name: /Carta secreta/ })).not.toBeInTheDocument();
-      expectNoSecretInPage();
+
+      if (!isLast) {
+        // The next player comes with a fresh face-down card: the previous one never shows again.
+        const nextName = order[position + 1]!;
+        expect(
+          await screen.findByRole('heading', { level: 2, name: nextName }),
+        ).toBeInTheDocument();
+        expect(
+          screen.getByRole('button', { name: position + 1 === 2 ? 'Começar partida' : 'Próximo' }),
+        ).toBeDisabled();
+        expect(screen.getByText('Vire a carta para ver')).toBeInTheDocument();
+        expect(document.body.textContent).not.toContain('Você é');
+        expectNoSecretInPage();
+      }
     }
 
     expect(roles.filter((role) => role === 'impostor')).toHaveLength(1);
     await waitFor(() => expect(router.state.location.pathname).toBe('/party/round'));
     expect(useMatchSession.getState().rounds.party?.stage).toBe('round');
-    expectStepCleared();
     for (const spy of [log, warn]) {
       expect(JSON.stringify(spy.mock.calls)).not.toContain(WORD);
       expect(JSON.stringify(spy.mock.calls)).not.toContain(HINT);
@@ -140,23 +138,23 @@ describe('reveal screen', () => {
 
   it('keeps "Próximo" locked while the card was never turned', async () => {
     renderReveal();
-    fireEvent.click(await screen.findByRole('button', { name: 'Sou eu' }));
 
     expect(await screen.findByRole('button', { name: 'Próximo' })).toBeDisabled();
     expect(useMatchSession.getState().advanceCard('party')).toBe(false);
   });
 
-  it('comes back to the saved step with the card face down after a reload', async () => {
+  it('comes back to the player of the turn with the card face down after a reload', async () => {
     const first = renderReveal();
-    fireEvent.click(await screen.findByRole('button', { name: 'Sou eu' }));
+    const name = (await screen.findByRole('heading', { level: 2 })).textContent;
     fireEvent.pointerDown(await screen.findByRole('button', { name: /Carta secreta/ }), pointer);
     fireEvent.pointerUp(getCard(), pointer);
     first.unmount();
 
     renderReveal();
 
+    expect(await screen.findByRole('heading', { level: 2, name })).toBeInTheDocument();
     expect(await screen.findByRole('button', { name: /Carta secreta/ })).toBeInTheDocument();
-    expect(screen.queryByRole('heading', { level: 2 })).not.toBeInTheDocument();
+    expect(document.body.textContent).not.toContain('Você é');
     expectNoSecretInPage();
     // Already seen once: it can move on, and it can turn again.
     expect(screen.getByRole('button', { name: 'Próximo' })).toBeEnabled();
@@ -165,16 +163,6 @@ describe('reveal screen', () => {
       document.body.textContent?.includes('Você é') || document.body.innerHTML.includes(WORD),
     ).toBe(true);
     fireEvent.pointerUp(getCard(), pointer);
-  });
-
-  it('comes back to the pass step when the reload happened before "Sou eu"', async () => {
-    const first = renderReveal();
-    await screen.findByRole('button', { name: 'Sou eu' });
-    first.unmount();
-
-    renderReveal();
-
-    expect(await screen.findByRole('button', { name: 'Sou eu' })).toBeInTheDocument();
   });
 
   it('asks before leaving with the "x", and "Continuar rodada" keeps the round', async () => {
@@ -187,12 +175,12 @@ describe('reveal screen', () => {
 
     await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
     expect(useMatchSession.getState().rounds.party).not.toBeNull();
-    expect(screen.getByRole('button', { name: 'Sou eu' })).toBeInTheDocument();
+    expect(getCard()).toBeInTheDocument();
   });
 
   it('opens the sheet on the browser back instead of leaving, and "Sair" discards the round', async () => {
     const { router } = renderRevealOnBrowserHistory();
-    await screen.findByRole('button', { name: 'Sou eu' });
+    await screen.findByRole('button', { name: /Carta secreta/ });
 
     await pressBrowserBack();
     const dialog = screen.getByRole('dialog', { name: 'Sair da rodada?' });
@@ -201,12 +189,10 @@ describe('reveal screen', () => {
 
     await waitFor(() => expect(router.state.location.pathname).toBe('/'));
     expect(useMatchSession.getState().rounds.party).toBeNull();
-    expectStepCleared();
   });
 
   it('never goes back to a card already seen: the browser back keeps the reveal', async () => {
     const { router } = renderRevealOnBrowserHistory();
-    fireEvent.click(await screen.findByRole('button', { name: 'Sou eu' }));
     fireEvent.pointerDown(await screen.findByRole('button', { name: /Carta secreta/ }), pointer);
     fireEvent.pointerUp(getCard(), pointer);
 

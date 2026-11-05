@@ -35,11 +35,11 @@ export function PartyCardBack() {
         <circle cx="86" cy="22" r="4.5" fill={PARTY_CARD_COLORS.sun} />
         <rect
           x="9"
-          y="96"
+          y="76"
           width="9"
           height="9"
           rx="2"
-          transform="rotate(45 13.5 100.5)"
+          transform="rotate(45 13.5 80.5)"
           fill={PARTY_CARD_COLORS.cream}
         />
         <g transform="rotate(-8 50 62)">
