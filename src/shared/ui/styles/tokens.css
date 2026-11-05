@@ -1,0 +1,33 @@
+/*
+ * Contract tokens. Each theme (themes/arena.css, themes/party.css) sets the same `--theme-*`
+ * variables under `[data-theme='...']`; this file links them to Tailwind, so the utilities
+ * (`bg-bg`, `text-text-muted`, `rounded-card`, `shadow-button`, `font-display`) follow the theme.
+ */
+@theme inline {
+  --color-bg: var(--theme-color-bg);
+  --color-bg-elevated: var(--theme-color-bg-elevated);
+  --color-surface: var(--theme-color-surface);
+  --color-surface-strong: var(--theme-color-surface-strong);
+  --color-text: var(--theme-color-text);
+  --color-text-muted: var(--theme-color-text-muted);
+  --color-text-on-primary: var(--theme-color-text-on-primary);
+  --color-primary: var(--theme-color-primary);
+  --color-primary-strong: var(--theme-color-primary-strong);
+  --color-accent: var(--theme-color-accent);
+  --color-danger: var(--theme-color-danger);
+  --color-border: var(--theme-color-border);
+  --color-special: var(--theme-color-special);
+
+  --font-display: var(--theme-font-display);
+  --font-body: var(--theme-font-body);
+
+  --radius-sm: var(--theme-radius-sm);
+  --radius-md: var(--theme-radius-md);
+  --radius-lg: var(--theme-radius-lg);
+  --radius-card: var(--theme-radius-card);
+
+  --shadow-button: var(--theme-shadow-button);
+  --shadow-button-pressed: var(--theme-shadow-button-pressed);
+  --shadow-card: var(--theme-shadow-card);
+  --shadow-panel: var(--theme-shadow-panel);
+}

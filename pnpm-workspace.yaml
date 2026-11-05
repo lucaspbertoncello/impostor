@@ -1,0 +1,6 @@
+# Minimum age of a release before pnpm installs it: 14 days, in minutes.
+minimumReleaseAge: 20160
+
+# Build scripts run only for the packages listed here (pnpm blocks the rest).
+allowBuilds:
+  simple-git-hooks: false

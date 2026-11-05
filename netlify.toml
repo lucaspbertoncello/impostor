@@ -1,0 +1,12 @@
+[build]
+  command = "pnpm build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "26.13.0"
+
+# SPA: every path answers with index.html (the router decides what to draw).
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

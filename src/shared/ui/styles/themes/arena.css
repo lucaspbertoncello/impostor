@@ -1,0 +1,29 @@
+/* Arena theme: provisional values (the themes owner replaces them; the names are the contract). */
+[data-theme='arena'] {
+  --theme-color-bg: #0f1b3d;
+  --theme-color-bg-elevated: #172a5c;
+  --theme-color-surface: #1f3a8a;
+  --theme-color-surface-strong: #162d6e;
+  --theme-color-text: #fff7e0;
+  --theme-color-text-muted: #b9c4e6;
+  --theme-color-text-on-primary: #2a1a00;
+  --theme-color-primary: #f5b82e;
+  --theme-color-primary-strong: #d4960d;
+  --theme-color-accent: #38bdf8;
+  --theme-color-danger: #e5484d;
+  --theme-color-border: #0a1230;
+  --theme-color-special: #a855f7;
+
+  --theme-font-display: 'Lilita One', system-ui, sans-serif;
+  --theme-font-body: 'Fredoka', system-ui, sans-serif;
+
+  --theme-radius-sm: 6px;
+  --theme-radius-md: 10px;
+  --theme-radius-lg: 16px;
+  --theme-radius-card: 14px;
+
+  --theme-shadow-button: 0 4px 0 #8a5e00;
+  --theme-shadow-button-pressed: 0 1px 0 #8a5e00;
+  --theme-shadow-card: 0 8px 20px rgb(0 0 0 / 0.45);
+  --theme-shadow-panel: 0 6px 16px rgb(0 0 0 / 0.35);
+}

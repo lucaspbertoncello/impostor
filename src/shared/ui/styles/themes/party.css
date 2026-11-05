@@ -1,0 +1,29 @@
+/* Party theme: provisional values (the themes owner replaces them; the names are the contract). */
+[data-theme='party'] {
+  --theme-color-bg: #46178f;
+  --theme-color-bg-elevated: #5a26a8;
+  --theme-color-surface: #ffffff;
+  --theme-color-surface-strong: #f1e9ff;
+  --theme-color-text: #1f1147;
+  --theme-color-text-muted: #6b5a99;
+  --theme-color-text-on-primary: #ffffff;
+  --theme-color-primary: #f97316;
+  --theme-color-primary-strong: #c2570c;
+  --theme-color-accent: #22c55e;
+  --theme-color-danger: #ef4444;
+  --theme-color-border: #d8c8f5;
+  --theme-color-special: #ec4899;
+
+  --theme-font-display: 'Fredoka', system-ui, sans-serif;
+  --theme-font-body: 'Fredoka', system-ui, sans-serif;
+
+  --theme-radius-sm: 8px;
+  --theme-radius-md: 14px;
+  --theme-radius-lg: 22px;
+  --theme-radius-card: 24px;
+
+  --theme-shadow-button: 0 4px 0 #9a3f05;
+  --theme-shadow-button-pressed: 0 1px 0 #9a3f05;
+  --theme-shadow-card: 0 10px 24px rgb(31 17 71 / 0.35);
+  --theme-shadow-panel: 0 6px 18px rgb(31 17 71 / 0.25);
+}
