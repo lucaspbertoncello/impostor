@@ -1,0 +1,64 @@
+/* Sheet motion (React Aria sets data-entering / data-exiting on the overlay and the modal). */
+@keyframes sheet-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes sheet-slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes sheet-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.sheet-overlay[data-entering] {
+  animation: sheet-fade 180ms ease-out both;
+}
+
+.sheet-overlay[data-exiting] {
+  animation: sheet-fade 140ms ease-in reverse both;
+}
+
+.sheet-panel[data-entering] {
+  animation: sheet-slide-up 260ms cubic-bezier(0.2, 0.9, 0.25, 1.05);
+}
+
+.sheet-panel[data-exiting] {
+  animation: sheet-slide-up 180ms ease-in reverse both;
+}
+
+@media (min-width: 768px) {
+  .sheet-panel[data-entering] {
+    animation: sheet-pop 260ms cubic-bezier(0.2, 0.9, 0.25, 1.1);
+  }
+
+  .sheet-panel[data-exiting] {
+    animation: sheet-pop 160ms ease-in reverse both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sheet-overlay[data-entering],
+  .sheet-overlay[data-exiting],
+  .sheet-panel[data-entering],
+  .sheet-panel[data-exiting] {
+    animation: sheet-fade 120ms linear both;
+  }
+}

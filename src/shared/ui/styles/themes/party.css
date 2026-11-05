@@ -1,29 +1,67 @@
-/* Party theme: provisional values (the themes owner replaces them; the names are the contract). */
+/*
+ * Party theme: a polished party quiz. Flat saturated colors (no gradient on controls), solid
+ * shadows, no black outline, springy motion. Palette comes from the Party A logo (indigo, coral,
+ * yellow). Two radii only: 16 px (controls) and 24 px (cards). The border token is a lighter indigo
+ * line, never black.
+ * Text contrast (WCAG): white 16.5:1 on bg, muted 6.5:1 on surface, indigo on coral 5.4:1,
+ * indigo on yellow 10.2:1, white on crimson 5.6:1.
+ */
 [data-theme='party'] {
-  --theme-color-bg: #46178f;
-  --theme-color-bg-elevated: #5a26a8;
-  --theme-color-surface: #ffffff;
-  --theme-color-surface-strong: #f1e9ff;
-  --theme-color-text: #1f1147;
-  --theme-color-text-muted: #6b5a99;
-  --theme-color-text-on-primary: #ffffff;
-  --theme-color-primary: #f97316;
-  --theme-color-primary-strong: #c2570c;
-  --theme-color-accent: #22c55e;
-  --theme-color-danger: #ef4444;
-  --theme-color-border: #d8c8f5;
-  --theme-color-special: #ec4899;
+  --theme-color-bg: #1a1650;
+  --theme-color-bg-elevated: #231e6b;
+  --theme-color-surface: #2a2480;
+  --theme-color-surface-strong: #201b66;
+  --theme-color-text: #ffffff;
+  --theme-color-text-muted: #b9b4e6;
+  --theme-color-text-on-primary: #1a1650;
+  --theme-color-primary: #ff5a5f;
+  --theme-color-primary-strong: #b8363d;
+  --theme-color-accent: #ffc21a;
+  --theme-color-danger: #c81e4b;
+  --theme-color-border: #4a43b8;
+  --theme-color-special: #6ee7b7;
+
+  /* Extra tokens (same names in arena.css). */
+  --theme-color-secondary: #4b43c8;
+  --theme-color-secondary-strong: #1f1a66;
+  --theme-color-text-on-secondary: #ffffff;
+  --theme-color-danger-strong: #7a0f2e;
+  --theme-color-danger-text: #ff9db3;
+  --theme-color-text-on-danger: #ffffff;
+  --theme-color-special-strong: #2f9e78;
+  --theme-color-text-on-special: #1a1650;
+  --theme-color-ring: #ffc21a;
+  --theme-color-title-stroke: transparent;
 
   --theme-font-display: 'Fredoka', system-ui, sans-serif;
   --theme-font-body: 'Fredoka', system-ui, sans-serif;
 
-  --theme-radius-sm: 8px;
-  --theme-radius-md: 14px;
-  --theme-radius-lg: 22px;
+  --theme-radius-sm: 16px;
+  --theme-radius-md: 16px;
+  --theme-radius-lg: 24px;
   --theme-radius-card: 24px;
 
-  --theme-shadow-button: 0 4px 0 #9a3f05;
-  --theme-shadow-button-pressed: 0 1px 0 #9a3f05;
-  --theme-shadow-card: 0 10px 24px rgb(31 17 71 / 0.35);
-  --theme-shadow-panel: 0 6px 18px rgb(31 17 71 / 0.25);
+  --theme-button-border: 0px;
+  --theme-outline-width: 2px;
+  --theme-press-travel: 6px;
+  --theme-title-stroke: 0px;
+  --theme-title-shadow: none;
+  --theme-title-case: none;
+
+  /* `--btn-edge` is set per button variant (the darker tone of its face). */
+  --theme-shadow-button: 0 6px 0 var(--btn-edge, #14103e);
+  --theme-shadow-button-pressed: 0 0 0 var(--btn-edge, #14103e);
+  --theme-shadow-card: 0 6px 0 #14103e;
+  --theme-shadow-panel: 0 4px 0 #14103e;
+
+  /* Background: flat indigo with two hard-edged circles and a faint dot grid (pattern, not gradient). */
+  background-image:
+    radial-gradient(circle at 20px 20px, rgb(255 255 255 / 0.05) 3px, transparent 3.5px),
+    radial-gradient(circle at 108% -4%, #231e6b 0 180px, transparent 181px),
+    radial-gradient(circle at -12% 104%, #211c68 0 150px, transparent 151px);
+  background-size:
+    56px 56px,
+    auto,
+    auto;
+  background-repeat: repeat, no-repeat, no-repeat;
 }

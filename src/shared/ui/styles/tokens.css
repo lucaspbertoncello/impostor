@@ -2,7 +2,12 @@
  * Contract tokens. Each theme (themes/arena.css, themes/party.css) sets the same `--theme-*`
  * variables under `[data-theme='...']`; this file links them to Tailwind, so the utilities
  * (`bg-bg`, `text-text-muted`, `rounded-card`, `shadow-button`, `font-display`) follow the theme.
+ * Extra tokens (secondary, danger-strong, danger-text, special-strong, ring, ...) were added by the
+ * themes owner and exist in both themes.
  */
+@custom-variant arena (&:where([data-theme='arena'], [data-theme='arena'] *));
+@custom-variant party (&:where([data-theme='party'], [data-theme='party'] *));
+
 @theme inline {
   --color-bg: var(--theme-color-bg);
   --color-bg-elevated: var(--theme-color-bg-elevated);
@@ -18,6 +23,16 @@
   --color-border: var(--theme-color-border);
   --color-special: var(--theme-color-special);
 
+  --color-secondary: var(--theme-color-secondary);
+  --color-secondary-strong: var(--theme-color-secondary-strong);
+  --color-text-on-secondary: var(--theme-color-text-on-secondary);
+  --color-danger-strong: var(--theme-color-danger-strong);
+  --color-danger-text: var(--theme-color-danger-text);
+  --color-text-on-danger: var(--theme-color-text-on-danger);
+  --color-special-strong: var(--theme-color-special-strong);
+  --color-text-on-special: var(--theme-color-text-on-special);
+  --color-ring: var(--theme-color-ring);
+
   --font-display: var(--theme-font-display);
   --font-body: var(--theme-font-body);
 
@@ -30,4 +45,14 @@
   --shadow-button-pressed: var(--theme-shadow-button-pressed);
   --shadow-card: var(--theme-shadow-card);
   --shadow-panel: var(--theme-shadow-panel);
+}
+
+/* Marquee lettering: Arena strokes and shadows it, Party leaves it plain (tokens set to none). */
+@utility display-text {
+  font-family: var(--theme-font-display);
+  text-transform: var(--theme-title-case);
+  -webkit-text-stroke: var(--theme-title-stroke) var(--theme-color-title-stroke);
+  paint-order: stroke fill;
+  text-shadow: var(--theme-title-shadow);
+  letter-spacing: 0.01em;
 }

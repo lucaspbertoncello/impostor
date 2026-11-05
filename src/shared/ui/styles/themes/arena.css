@@ -1,29 +1,72 @@
-/* Arena theme: provisional values (the themes owner replaces them; the names are the contract). */
+/*
+ * Arena theme: a fantasy-arena mobile game. Heavy marquee lettering, dark navy outlines, gold and
+ * blue, volume from a solid base shadow plus an inner highlight. Palette comes from the Arena A
+ * logo (design/assets/logo/logo notes.md). Two radii only: 8 px (controls) and 14 px (panels).
+ * Text contrast (WCAG): text 15.7:1 on bg, muted 5.9:1 on surface, navy on gold 11.6:1.
+ */
 [data-theme='arena'] {
-  --theme-color-bg: #0f1b3d;
-  --theme-color-bg-elevated: #172a5c;
-  --theme-color-surface: #1f3a8a;
-  --theme-color-surface-strong: #162d6e;
-  --theme-color-text: #fff7e0;
-  --theme-color-text-muted: #b9c4e6;
-  --theme-color-text-on-primary: #2a1a00;
-  --theme-color-primary: #f5b82e;
-  --theme-color-primary-strong: #d4960d;
-  --theme-color-accent: #38bdf8;
-  --theme-color-danger: #e5484d;
-  --theme-color-border: #0a1230;
-  --theme-color-special: #a855f7;
+  --theme-color-bg: #0b1b44;
+  --theme-color-bg-elevated: #14307a;
+  --theme-color-surface: #1c3f94;
+  --theme-color-surface-strong: #132b70;
+  --theme-color-text: #f4f8ff;
+  --theme-color-text-muted: #b9cbf0;
+  --theme-color-text-on-primary: #0a1a47;
+  --theme-color-primary: #ffd22e;
+  --theme-color-primary-strong: #c77a0a;
+  --theme-color-accent: #4e9bff;
+  --theme-color-danger: #e02453;
+  --theme-color-border: #040c24;
+  --theme-color-special: #8f3fe6;
+
+  /* Extra tokens (same names in party.css). */
+  --theme-color-secondary: #2f6fea;
+  --theme-color-secondary-strong: #173f9e;
+  --theme-color-text-on-secondary: #ffffff;
+  --theme-color-danger-strong: #8f1236;
+  --theme-color-danger-text: #ffa0b1;
+  --theme-color-text-on-danger: #ffffff;
+  --theme-color-special-strong: #5b1fa8;
+  --theme-color-text-on-special: #ffffff;
+  --theme-color-ring: #fff4b0;
+  --theme-color-title-stroke: #040c24;
 
   --theme-font-display: 'Lilita One', system-ui, sans-serif;
-  --theme-font-body: 'Fredoka', system-ui, sans-serif;
+  --theme-font-body: 'Nunito', system-ui, sans-serif;
 
-  --theme-radius-sm: 6px;
-  --theme-radius-md: 10px;
-  --theme-radius-lg: 16px;
+  --theme-radius-sm: 8px;
+  --theme-radius-md: 8px;
+  --theme-radius-lg: 14px;
   --theme-radius-card: 14px;
 
-  --theme-shadow-button: 0 4px 0 #8a5e00;
-  --theme-shadow-button-pressed: 0 1px 0 #8a5e00;
-  --theme-shadow-card: 0 8px 20px rgb(0 0 0 / 0.45);
-  --theme-shadow-panel: 0 6px 16px rgb(0 0 0 / 0.35);
+  /* Outline: dark ring around every control. Volume: inner top highlight and inner bottom band. */
+  --theme-button-border: 3px;
+  --theme-outline-width: 3px;
+  --theme-press-travel: 5px;
+  --theme-title-stroke: 5px;
+  --theme-title-shadow: 0 3px 0 #040c24;
+  --theme-title-case: uppercase;
+
+  --theme-shadow-button:
+    inset 0 3px 0 rgb(255 255 255 / 0.45), inset 0 -5px 0 rgb(0 0 0 / 0.22),
+    0 6px 0 var(--theme-color-border);
+  --theme-shadow-button-pressed:
+    inset 0 -2px 0 rgb(0 0 0 / 0.22), 0 1px 0 var(--theme-color-border);
+  --theme-shadow-card:
+    inset 0 2px 0 rgb(255 255 255 / 0.18), 0 0 0 3px var(--theme-color-border),
+    0 12px 22px rgb(4 12 36 / 0.55);
+  --theme-shadow-panel:
+    inset 0 2px 0 rgb(255 255 255 / 0.12), 0 0 0 3px var(--theme-color-border),
+    0 6px 0 3px var(--theme-color-border);
+
+  /* Background: light rays from the top, a glow, and a navy fall-off. One static layer stack. */
+  background-image:
+    repeating-conic-gradient(
+      from 0deg at 50% -8%,
+      rgb(255 255 255 / 0.035) 0deg 6deg,
+      transparent 6deg 12deg
+    ),
+    radial-gradient(ellipse 100% 45% at 50% 0%, #2b5bd0 0%, rgb(43 91 208 / 0) 100%),
+    linear-gradient(180deg, #14307a 0%, #0b1b44 55%, #070f2b 100%);
+  background-repeat: no-repeat;
 }
