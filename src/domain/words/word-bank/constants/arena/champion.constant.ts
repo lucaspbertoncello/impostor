@@ -9,14 +9,14 @@ export const ARENA_CHAMPION_CATEGORY: WordCategory = {
     {
       id: 'rei-esqueleto',
       word: 'Rei Esqueleto',
-      hint: 'Dono do pedaço',
+      hint: 'Usa coroa',
       level: 'medium',
       categoryId: 'arena-champion',
     },
     {
       id: 'cavaleiro-dourado',
       word: 'Cavaleiro Dourado',
-      hint: 'Pódio',
+      hint: 'Campeão de quatro',
       level: 'medium',
       categoryId: 'arena-champion',
     },
@@ -30,14 +30,14 @@ export const ARENA_CHAMPION_CATEGORY: WordCategory = {
     {
       id: 'mineiro-bombado',
       word: 'Mineiro Bombado',
-      hint: 'Hora extra',
+      hint: 'Dano que cresce',
       level: 'hard',
       categoryId: 'arena-champion',
     },
     {
       id: 'goblinstein',
       word: 'Goblinstein',
-      hint: 'Cientista maluco',
+      hint: 'Também dá choque',
       level: 'hard',
       categoryId: 'arena-champion',
     },
