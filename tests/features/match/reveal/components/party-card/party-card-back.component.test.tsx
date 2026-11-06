@@ -14,4 +14,11 @@ describe('PartyCardBack', () => {
     expect(second.container).toHaveTextContent('Segure para virar');
     expect(second.container).not.toHaveTextContent(/impostor|dica/i);
   });
+
+  it('marks the pill and every pulsing ring as decoration of the back', () => {
+    const { container, getByText } = render(<PartyCardBack />);
+
+    expect(getByText('Segure para virar')).toHaveAttribute('data-back-visual');
+    expect(container.querySelectorAll('span[data-back-visual]').length).toBeGreaterThan(0);
+  });
 });

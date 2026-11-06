@@ -92,6 +92,11 @@
   pointer-events: none;
 }
 
+/* On the back, while the card turns (see flip-card.css): the shine is a layer of its own. */
+[data-flip-face='back'][data-turning='true'] .arena-card__field::after {
+  opacity: 0;
+}
+
 @keyframes arena-card-sheen {
   0% {
     transform: skewX(-18deg) translateX(0);

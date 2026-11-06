@@ -14,7 +14,7 @@ export function ArenaCardBack() {
           </div>
         </div>
       </div>
-      <div className="arena-card__plate">
+      <div className="arena-card__plate" data-back-visual>
         <div className="arena-card__press">
           <svg className="arena-card__press-icon" viewBox="0 0 48 48" aria-hidden="true">
             <circle

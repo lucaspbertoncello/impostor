@@ -1,0 +1,33 @@
+/*
+ * Card faces and WebKit (Safari, every browser on iOS).
+ *
+ * `backface-visibility` is not inherited, and WebKit gives every child that becomes its own layer
+ * (a running animation, a transform, an opacity change, a mask) a back-face test of its own. So a
+ * child of the back face with `backface-visibility: visible` is painted, mirrored, while the card is
+ * past 90 degrees even though its face is hidden. Repeating the property on the whole subtree (and
+ * on the pseudo-elements) makes every layer hide itself with its face.
+ */
+[data-flip-face],
+[data-flip-face] *,
+[data-flip-face] *::before,
+[data-flip-face] *::after {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+/* The faces are only visual: the transparent control above them owns every touch and every state. */
+[data-flip-face],
+[data-flip-face] * {
+  pointer-events: none;
+}
+
+/*
+ * Pieces of the back that are only decoration (the "hold here" pill, the pulsing rings, the
+ * shine). They are hidden from the first instant of the turn until the card is back at rest, so a
+ * layer that escapes the back-face test still has nothing to show. `!important` beats the inline
+ * opacity that Motion writes on the rings.
+ */
+[data-flip-face='back'][data-turning='true'] [data-back-visual] {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}

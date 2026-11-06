@@ -1,5 +1,5 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { FlipCard } from '#/shared/components/flip-card/flip-card.component.tsx';
 
@@ -123,5 +123,87 @@ describe('FlipCard onFirstReveal', () => {
     fireEvent.keyDown(card, { key: 'Enter' });
     fireEvent.keyUp(card, { key: 'Enter' });
     expect(onFirstReveal).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('FlipCard Safari defences', () => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  function faces() {
+    const back = document.querySelector('[data-flip-face="back"]');
+    const front = document.querySelector('[data-flip-face="front"]');
+    if (!(back instanceof HTMLElement) || !(front instanceof HTMLElement)) {
+      throw new Error('faces not found');
+    }
+    return { back, front };
+  }
+
+  it('hides the back-face of both faces in both spellings and keeps them out of the touch', () => {
+    setup();
+    const { back, front } = faces();
+    for (const face of [back, front]) {
+      expect(face.style.backfaceVisibility).toBe('hidden');
+      expect(face.style.getPropertyValue('-webkit-backface-visibility')).toBe('hidden');
+      expect(face.style.pointerEvents).toBe('none');
+    }
+  });
+
+  it('keeps the faces directly inside the 3D container, with no flattening wrapper', () => {
+    setup();
+    const { back, front } = faces();
+    expect(back.parentElement).toBe(front.parentElement);
+    const container = back.parentElement as HTMLElement;
+    expect(container.style.transformStyle).toBe('preserve-3d');
+    for (
+      let node: HTMLElement | null = container;
+      node !== null && node.parentElement !== document.body;
+      node = node.parentElement
+    ) {
+      expect(node.style.overflow).toBe('');
+      expect(node.style.filter).toBe('');
+      expect(node.style.opacity).toBe('');
+    }
+  });
+
+  it('hides the decoration of the back while the card turns and restores it once it is back at rest', () => {
+    vi.useFakeTimers();
+    const { card } = setup();
+    const { back } = faces();
+    expect(back).toHaveAttribute('data-turning', 'false');
+
+    fireEvent.pointerDown(card, pointer);
+    expect(back).toHaveAttribute('data-turning', 'true');
+
+    fireEvent.pointerUp(card, pointer);
+    expect(back).toHaveAttribute('data-turning', 'true');
+
+    act(() => {
+      vi.advanceTimersByTime(100);
+    });
+    expect(back).toHaveAttribute('data-turning', 'true');
+
+    act(() => {
+      vi.advanceTimersByTime(400);
+    });
+    expect(back).toHaveAttribute('data-turning', 'false');
+  });
+
+  it('keeps the decoration hidden when the card is held again before it is back at rest', () => {
+    vi.useFakeTimers();
+    const { card } = setup();
+    const { back } = faces();
+
+    fireEvent.pointerDown(card, pointer);
+    fireEvent.pointerUp(card, pointer);
+    act(() => {
+      vi.advanceTimersByTime(100);
+    });
+    fireEvent.pointerDown(card, pointer);
+    act(() => {
+      vi.advanceTimersByTime(1000);
+    });
+    expect(back).toHaveAttribute('data-turning', 'true');
   });
 });

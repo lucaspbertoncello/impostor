@@ -5,7 +5,7 @@ import {
   useReducedMotion,
   useSpring,
 } from 'motion/react';
-import type { PointerEvent, ReactNode } from 'react';
+import { useEffect, useState, type PointerEvent, type ReactNode } from 'react';
 
 import {
   FLIP_TRANSITIONS,
@@ -13,6 +13,7 @@ import {
   MAX_TILT_DEGREES,
 } from '#/shared/components/flip-card/flip-card-timings.constant.ts';
 import type { FlipStyle } from '#/shared/components/flip-card/flip-style.type.ts';
+import '#/shared/components/flip-card/styles/flip-card.css';
 import { useHoldCard } from '#/shared/components/flip-card/use-hold-card.hook.ts';
 
 type FlipCardProps = {
@@ -27,9 +28,12 @@ type FlipCardProps = {
   className?: string;
 };
 
+// The faces never take the touch (the control above does), so no state of the back (press, hover)
+// can fire in the middle of a turn. The rest of the Safari defence is in `flip-card.css`.
 const FACE_STYLE = {
   backfaceVisibility: 'hidden',
   WebkitBackfaceVisibility: 'hidden',
+  pointerEvents: 'none',
 } as const;
 
 const PROTECTION_STYLE = {
@@ -55,6 +59,19 @@ export function FlipCard({
   const { held, handlers } = useHoldCard({ onFirstReveal });
   const reducedMotion = useReducedMotion() ?? false;
   const timings = FLIP_TRANSITIONS[flipStyle];
+
+  // The decoration of the back (`data-back-visual`) is hidden from the moment the card starts to
+  // turn until it is back at rest: it never has to survive the half turn where WebKit could paint it
+  // mirrored. The state is set during render so it is already hidden in the commit that starts the turn.
+  const [backAtRest, setBackAtRest] = useState(true);
+  if (held && backAtRest) setBackAtRest(false);
+  const turnBackMs = reducedMotion ? 0 : timings.back.duration * 1000;
+
+  useEffect(() => {
+    if (held || backAtRest) return;
+    const timer = window.setTimeout(() => setBackAtRest(true), turnBackMs + 40);
+    return () => window.clearTimeout(timer);
+  }, [held, backAtRest, turnBackMs]);
 
   // Tilt and glare follow the finger through motion values: no React render per move.
   const tiltX = useSpring(0, { stiffness: 300, damping: 30 });
@@ -126,7 +143,12 @@ export function FlipCard({
           transition={transition}
           style={{ transformStyle: 'preserve-3d', WebkitTransformStyle: 'preserve-3d' }}
         >
-          <div aria-hidden="true" style={FACE_STYLE}>
+          <div
+            aria-hidden="true"
+            data-flip-face="back"
+            data-turning={backAtRest ? 'false' : 'true'}
+            style={{ ...FACE_STYLE, transform: 'translateZ(0)' }}
+          >
             {back}
           </div>
           {/*
@@ -136,6 +158,7 @@ export function FlipCard({
           */}
           <div
             className="absolute inset-0"
+            data-flip-face="front"
             style={{ ...FACE_STYLE, transform: 'rotateY(180deg)' }}
             aria-live="polite"
             aria-atomic="true"

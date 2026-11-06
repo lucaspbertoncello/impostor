@@ -50,4 +50,10 @@ describe('ArenaCardBack', () => {
     expect(html.toLowerCase()).not.toContain('impostor');
     expect(screen.getByText('Segure para virar')).toBeInTheDocument();
   });
+
+  it('marks the pill as decoration of the back, so the card can hide it while it turns', () => {
+    render(<ArenaCardBack />);
+
+    expect(screen.getByText('Segure para virar').closest('[data-back-visual]')).not.toBeNull();
+  });
 });

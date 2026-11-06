@@ -62,6 +62,7 @@ export function PartyCardBack() {
         <motion.span
           key={delay}
           aria-hidden="true"
+          data-back-visual
           className="pointer-events-none absolute left-1/2 top-[44.3%] aspect-square w-[34%] -translate-x-1/2 -translate-y-1/2 rounded-full border-4"
           style={{ borderColor: PARTY_CARD_COLORS.sun }}
           initial={{ scale: 1, opacity: reduceMotion ? 0.35 : 0 }}
@@ -71,6 +72,7 @@ export function PartyCardBack() {
       ))}
 
       <div
+        data-back-visual
         className="absolute inset-x-6 bottom-6 flex min-h-14 items-center justify-center rounded-md px-4 py-2 text-center font-bold leading-tight"
         style={{
           backgroundColor: PARTY_CARD_COLORS.sun,
