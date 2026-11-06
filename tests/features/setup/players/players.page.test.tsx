@@ -12,7 +12,11 @@ import { renderApp } from '#tests/support/router/render-app.util.tsx';
 async function addPlayer(user: ReturnType<typeof userEvent.setup>, name: string) {
   await user.click(screen.getByRole('button', { name: /Adicionar jogador/ }));
   const dialog = await screen.findByRole('dialog');
-  await user.type(within(dialog).getByRole('textbox', { name: /Nome/ }), `${name}{Enter}`);
+  // Cola o nome de uma vez: digitar letra a letra re-renderiza a grade dos 16 ícones a cada tecla
+  // e deixava o teste perto do limite de 5 s na suíte inteira. A digitação em si é testada à parte.
+  await user.click(within(dialog).getByRole('textbox', { name: /Nome/ }));
+  await user.paste(name);
+  await user.keyboard('{Enter}');
   await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
 }
 
